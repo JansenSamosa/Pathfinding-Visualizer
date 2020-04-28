@@ -143,15 +143,14 @@ export class Astar extends Component {
         this.openCell(this.getCellByID(this.state.startCell))
         this.astar = setInterval(() => {
             for(let j = 0; j < this.props.config.overdrive; j++) {
-                //console.log(this.state.open)
-                let current = this.state.open[0]
-                //console.log(this.hCost(current))
+                let current = this.getCellByID(this.state.open[0].id)
                 for(let i = 0; i < this.state.open.length; i++) {
-                    if(this.fCost(this.state.open[i]) < this.fCost(current)) {
-                        current = this.state.open[i]
-                    } else if(this.fCost(this.state.open[i]) === this.fCost(current)) {
-                        if(this.hCost(this.state.open[i]) < this.hCost(current)) {
-                            current = this.state.open[i]
+                    const cell = this.getCellByID(this.state.open[i].id)
+                    if(this.fCost(cell) < this.fCost(current)) {
+                        current = cell
+                    } else if(this.fCost(cell) === this.fCost(current)) {
+                        if(this.hCost(cell) < this.hCost(current)) {
+                            current = cell
                         }
                     }
                 }
