@@ -1,0 +1,57 @@
+.grid {
+    margin: auto;
+    position: relative;
+    top: 100px;
+}
+.grid-cell {
+    width:25px;
+    height:25px;
+    float: left;
+    border: 1px solid lightblue;
+    cursor: crosshair;
+}
+.grid-cell-background {
+    position: relative;
+    width:25px;
+    height:25px;
+}
+.NORMAL .grid-cell-background{
+    background-color: white;
+    z-index: 2;
+}
+.WALL .grid-cell-background{
+    background-color: rgb(31, 9, 110);
+    animation: growshrink 350ms;
+    width:29px; height:29px; top: -2px; left: -2px;
+    z-index: 3;
+}
+@keyframes growshrink {
+    0% {width:8px; height:8px;top: 7px;left: 7px; background-color: rgb(0, 1, 83)}
+    65% {width:35px; height:35px; top: -6px; left: -6px; background-color: rgb(76, 0, 139)}
+    100% {width:29px; height:29px; top: -2px; left: -2px; background-color: rgb(0, 1, 83)}
+}
+.START .grid-cell-background{
+    background-color: red;
+    z-index: 2;
+}
+.FINISH .grid-cell-background{
+    background-color: green;
+    z-index: 2;
+}
+.PATH .grid-cell-background{
+    background-color: purple;
+    z-index: 2;
+}
+.OPEN .grid-cell-background{
+    background-color: rgb(51, 82, 255);
+    z-index: 2;
+    animation: growshrinkop 200ms;
+}
+.CLOSE .grid-cell-background{
+    background-color: rgb(178, 177, 231);
+    z-index: 2;
+}
+@keyframes growshrinkop {
+    0% {width:8px; height:8px;top: 7px;left: 7px}
+    100% {width:25px; height: 25px;}
+}
