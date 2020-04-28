@@ -36,6 +36,14 @@ export class Astar extends Component {
         return {startCell, finishCell, grid}
     }
     componentDidMount() {
+        for(let r = 0; r < this.props.grid.length; r++) {
+            for(let c = 0; c < this.props.grid[r].length; c++) {
+                const cell = this.props.grid[r][c]
+                if(cell.type === 'CLOSE' || cell.type === 'OPEN' || cell.type === 'PATH') {
+                    window.cellRefs[r][c].changeType('NORMAL', false)
+                }
+            }
+        }
         setTimeout(() => {
             this.setState({...this.state, ...this.defineGrid()})
             this.algorithm()
