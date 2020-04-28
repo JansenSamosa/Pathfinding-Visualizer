@@ -51,7 +51,12 @@
     background-color: rgb(178, 177, 231);
     z-index: 2;
 }
+
 @keyframes growshrinkop {
     0% {width:8px; height:8px;top: 7px;left: 7px}
     100% {width:25px; height: 25px;}
+}
+.CURRENT .grid-cell-background{
+    background-color: rgb(255, 153, 58);
+    z-index: 2;
 }

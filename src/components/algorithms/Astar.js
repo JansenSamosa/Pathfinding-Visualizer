@@ -68,7 +68,7 @@ export class Astar extends Component {
             const finishCell = this.getCellByID(this.state.finishCell)
             const x1 = cell.column; const y1 = cell.row; const x2 = finishCell.column; const y2 = finishCell.row
             //const h = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2)) * 10
-            const h = 10 * (Math.abs(x1 - x2) + Math.abs(y1 - y2))
+            const h = 10 * (Math.abs(x1 - x2) + Math.abs(y1 - y2)) * this.props.config.hMultiplier
             return h
         } catch(e) {return 99999}
     }
@@ -131,20 +131,21 @@ export class Astar extends Component {
     closeCell = cell => {
         let open = Object.assign([], this.state.open)
         let closed = Object.assign([], this.state.closed)
-        open = open.filter(c => c !== cell)
         closed.push(cell)
-        this.setState({...this.state, closed, open})
+        open = open.filter(c => c.id !== cell.id)
         if(cell.id !== this.state.startCell && cell.id !== this.state.finishCell) {
             window.cellRefs[cell.row][cell.column].changeType('CLOSE', false)
         }
+        this.setState({...this.state, closed, open})
     }
     algorithm = () => {
         let n = 0
         this.openCell(this.getCellByID(this.state.startCell))
         this.astar = setInterval(() => {
             for(let j = 0; j < this.props.config.overdrive; j++) {
+                //console.log(this.state.open)
                 let current = this.state.open[0]
-                console.log(this.hCost(current))
+                //console.log(this.hCost(current))
                 for(let i = 0; i < this.state.open.length; i++) {
                     if(this.fCost(this.state.open[i]) < this.fCost(current)) {
                         current = this.state.open[i]
@@ -154,8 +155,10 @@ export class Astar extends Component {
                         }
                     }
                 }
+                
                 this.closeCell(current)
                 
+ 
                 if(current.id === this.state.finishCell) {
                     this.showPath()
                     clearInterval(this.astar)
@@ -168,9 +171,10 @@ export class Astar extends Component {
                     if(current.gCost + plusG < neighbors[i].gCost) {
                         this.setGCost(neighbors[i], current.gCost + plusG)
                         this.setPrevCell(neighbors[i], current)
-                        if(this.state.open.filter(c => c === neighbors[i]).length === 0) {
+                        //console.log(this.state.open.forEach(c => console.log(c)))
+                        if(this.state.open.filter(c => c.id === neighbors[i].id).length === 0) {
                             this.openCell(neighbors[i]) 
-                        }
+                        } else console.log("ASDASD")
                     }
                 }
                 //console.log(n)
