@@ -142,38 +142,40 @@ export class Astar extends Component {
         let n = 0
         this.openCell(this.getCellByID(this.state.startCell))
         this.astar = setInterval(() => {
-            let current = this.state.open[0]
-            console.log(this.hCost(current))
-            for(let i = 0; i < this.state.open.length; i++) {
-                if(this.fCost(this.state.open[i]) < this.fCost(current)) {
-                    current = this.state.open[i]
-                } else if(this.fCost(this.state.open[i]) === this.fCost(current)) {
-                    if(this.hCost(this.state.open[i]) < this.hCost(current)) {
+            for(let j = 0; j < this.props.config.overdrive; j++) {
+                let current = this.state.open[0]
+                console.log(this.hCost(current))
+                for(let i = 0; i < this.state.open.length; i++) {
+                    if(this.fCost(this.state.open[i]) < this.fCost(current)) {
                         current = this.state.open[i]
+                    } else if(this.fCost(this.state.open[i]) === this.fCost(current)) {
+                        if(this.hCost(this.state.open[i]) < this.hCost(current)) {
+                            current = this.state.open[i]
+                        }
                     }
                 }
-            }
-            this.closeCell(current)
-            
-            if(current.id === this.state.finishCell) {
-                this.showPath()
-                clearInterval(this.astar)
-                //path found 
-            }
-            const neighbors = this.getNeighbors(current)
-            for(let i = 0; i < neighbors.length; i++) {
-                const diag = current.row !== neighbors[i].row && current.column !== neighbors[i].column ? true : false
-                const plusG = diag ? 10 * Math.sqrt(2) : 10
-                if(current.gCost + plusG < neighbors[i].gCost) {
-                    this.setGCost(neighbors[i], current.gCost + plusG)
-                    this.setPrevCell(neighbors[i], current)
-                    if(this.state.open.filter(c => c === neighbors[i]).length === 0) {
-                        this.openCell(neighbors[i]) 
+                this.closeCell(current)
+                
+                if(current.id === this.state.finishCell) {
+                    this.showPath()
+                    clearInterval(this.astar)
+                    //path found 
+                }
+                const neighbors = this.getNeighbors(current)
+                for(let i = 0; i < neighbors.length; i++) {
+                    const diag = current.row !== neighbors[i].row && current.column !== neighbors[i].column ? true : false
+                    const plusG = diag ? 10 * Math.sqrt(2) : 10
+                    if(current.gCost + plusG < neighbors[i].gCost) {
+                        this.setGCost(neighbors[i], current.gCost + plusG)
+                        this.setPrevCell(neighbors[i], current)
+                        if(this.state.open.filter(c => c === neighbors[i]).length === 0) {
+                            this.openCell(neighbors[i]) 
+                        }
                     }
                 }
+                //console.log(n)
+                n++
             }
-            //console.log(n)
-            n++
         }, 1)
     }
     showPath = () => {
