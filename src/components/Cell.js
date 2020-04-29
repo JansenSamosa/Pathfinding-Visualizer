@@ -11,10 +11,10 @@ export class Cell extends Component {
         const rows = this.props.config.rows
         const columns = this.props.config.columns
         const cell = this.state.cell
-        if(this.state.cell.id === `CELL${Math.floor(rows/2)}-0`) this.setState({...this.state, cell: {...cell, type: 'START'}})
-        if(this.state.cell.id === `CELL${Math.floor(rows/2)}-${columns-1}`) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
-        //if(this.state.cell.id === `CELL${0}-0`) this.setState({...this.state, cell: {...cell, type: 'START'}})
-        //if(this.state.cell.id === `CELL${rows-1}-${columns-1}`) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
+        //if(this.state.cell.id === `CELL${Math.floor(rows/2)}-0`) this.setState({...this.state, cell: {...cell, type: 'START'}})
+        //if(this.state.cell.id === `CELL${Math.floor(rows/2)}-${columns-1}`) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
+        if(this.state.cell.id === `CELL${0}-0`) this.setState({...this.state, cell: {...cell, type: 'START'}})
+        if(this.state.cell.id === `CELL${rows-1}-${columns-1}`) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
     }
     shouldComponentUpdate(nextProps, nextState) {
         if(this.state !== nextState) return true

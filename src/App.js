@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import tumult from 'tumult'
 
 import Cell from './components/Cell'
 import Algorithm from './components/algorithms/Algorithm'
@@ -41,8 +42,12 @@ export class App extends Component {
         }
     }
     componentDidMount() {
+        document.addEventListener('keydown', this.handKeyEvents.bind(this))
         document.addEventListener('mousedown', this.handleMouseEvents.bind(this))
         document.addEventListener('mouseup', this.handleMouseEvents.bind(this))
+    }
+    handKeyEvents = e => {
+        if(e.key === 'p') this.perlinNoiseMap()
     }
     handleMouseEvents = e => {
         if(e.type === 'mousedown') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
@@ -55,6 +60,20 @@ export class App extends Component {
     }
     componentDidUpdate() {
         console.log(this.state)
+    }
+    perlinNoiseMap = () => {
+        const perlin = new tumult.PerlinN()
+        for(let r = 0; r < this.state.config.rows; r++) {
+            for(let c = 0; c < this.state.config.columns; c++) {
+                if(this.state.grid[r][c].type !== 'START' && this.state.grid[r][c].type !== 'FINISH') {
+                    const val = Math.abs(perlin.gen(c/3, r/3))
+                    if(this.state.grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL', false)
+                    if(val > .25) {
+                        window.cellRefs[r][c].changeType('WALL', false)
+                    }
+                }
+            }
+        }
     }
     updateCell = (r, c, newCell) => {
         let newGrid = Object.assign([], this.state.grid)
