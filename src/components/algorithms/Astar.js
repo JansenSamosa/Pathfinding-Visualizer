@@ -8,6 +8,7 @@ export class Astar extends Component {
             ...this.defineGrid(),
             open: [],
             closed: [],
+            D: 10
         }
     }
     defineGrid = (oldGrid) => {
@@ -64,9 +65,14 @@ export class Astar extends Component {
     hCost = cell => {
         try {
             const finishCell = this.getCellByID(this.state.finishCell)
+            const D = this.state.D
             const x1 = cell.column; const y1 = cell.row; const x2 = finishCell.column; const y2 = finishCell.row
-            //const h = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2)) * 10
-            const h = 10 * (Math.abs(x1 - x2) + Math.abs(y1 - y2))
+            const dx = Math.abs(x1 - x2)
+            const dy = Math.abs(y1 - y2)
+            //const h = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) * D //EUCLIDIAN DISTANCE
+            //const h = D * (dx + dy) //MANHATTAN DISTANCE
+            const D2 = D * Math.sqrt(2)
+            const h = D * (dx + dy) + (D2 - 2*D) * Math.min(dx, dy) //OCTILE DISTANCE
             return h
         } catch(e) {return 99999}
     }
@@ -174,7 +180,7 @@ export class Astar extends Component {
                 const neighbors = this.getNeighbors(current)
                 for(let i = 0; i < neighbors.length; i++) {
                     const diag = current.row !== neighbors[i].row && current.column !== neighbors[i].column ? true : false
-                    const plusG = diag ? 10 * Math.sqrt(2) : 10
+                    const plusG = diag ? this.state.D * Math.sqrt(2) : this.state.D
                     if(current.gCost + plusG < neighbors[i].gCost) {
                         this.setGCost(neighbors[i], current.gCost + plusG)
                         this.setPrevCell(neighbors[i], current)
