@@ -8,7 +8,6 @@ export class Astar extends Component {
             ...this.defineGrid(),
             open: [],
             closed: [],
-            djisktras: props.djisktras
         }
     }
     defineGrid = (oldGrid) => {
@@ -64,17 +63,18 @@ export class Astar extends Component {
     }
     hCost = cell => {
         try {
-            if(this.state.djisktras) return 0
             const finishCell = this.getCellByID(this.state.finishCell)
             const x1 = cell.column; const y1 = cell.row; const x2 = finishCell.column; const y2 = finishCell.row
             //const h = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2)) * 10
-            const h = 10 * (Math.abs(x1 - x2) + Math.abs(y1 - y2)) * this.props.config.hMultiplier
+            const h = 10 * (Math.abs(x1 - x2) + Math.abs(y1 - y2))
             return h
         } catch(e) {return 99999}
     }
     fCost = cell => {
+        if(this.props.config.algorithm === 'a*') return cell.gCost + this.hCost(cell)
+        if(this.props.config.algorithm === 'djisktras') return cell.gCost
+        if(this.props.config.algorithm === 'greedy') return this.hCost(cell)
         //console.log(cell.gCost, this.hCost(cell))
-        return cell.gCost + this.hCost(cell)
     }
     getCellByID = id => {
         id = id.replace('CELL', '')

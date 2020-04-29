@@ -35,7 +35,6 @@ export class App extends Component {
                 drawType: 'WALL',
                 algorithm: 'a',
                 overdrive: 1,
-                hMultiplier: 1
             },
             grid,
             startAlgorithm: true,
@@ -88,7 +87,6 @@ export class App extends Component {
                 <input type='text' value={this.state.config.drawType} onChange={e => this.setState({...this.state, config: {...this.state.config, drawType: e.target.value}})}/>
                 <input type='text' value={this.state.config.algorithm} onChange={e => this.setState({...this.state, config: {...this.state.config, algorithm: e.target.value}})}/>
                 <input type='number' value={this.state.config.overdrive} onChange={e => this.setState({...this.state, config: {...this.state.config, overdrive: e.target.value}})}/>
-                <input type='number' value={this.state.config.hMultiplier} onChange={e => this.setState({...this.state, config: {...this.state.config, hMultiplier: e.target.value}})}/>
                 <div className='grid' style={{width: `${this.state.config.columns * 25 + (this.state.config.columns * 2 * 1)}px`}}>
                     {this.renderGrid()}
                 </div>
