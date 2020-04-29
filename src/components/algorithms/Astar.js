@@ -102,18 +102,18 @@ export class Astar extends Component {
         if(left) neighbors.push(grid[row][column-1])
         if(right) neighbors.push(grid[row][column+1])
 
-        //if(top && right) {
-        //    if(grid[row-1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row-1][column+1])
-        //}
-        //if(top && left){
-        //    if(grid[row-1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row-1][column-1])
-        //} 
-        //if(bottom && right){
-        //    if(grid[row+1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row+1][column+1])
-        //} 
-        //if(bottom && left){
-        //    if(grid[row+1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row+1][column-1])
-        //} 
+        if(top && right) {
+            if(grid[row-1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row-1][column+1])
+        }
+        if(top && left){
+            if(grid[row-1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row-1][column-1])
+        } 
+        if(bottom && right){
+            if(grid[row+1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row+1][column+1])
+        } 
+        if(bottom && left){
+            if(grid[row+1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row+1][column-1])
+        } 
 
         neighbors = neighbors.filter(n => n.type !== 'WALL')
         
