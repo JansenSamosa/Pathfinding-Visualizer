@@ -47,7 +47,12 @@ export class App extends Component {
         document.addEventListener('mouseup', this.handleMouseEvents.bind(this))
     }
     handKeyEvents = e => {
-        if(e.key === 'p') this.perlinNoiseMap()
+        if(e.key === 'n') this.perlinNoiseMap()
+        if(e.key === 'p') {
+            this.setState({...this.state, startAlgorithm: false}, () => {
+                this.setState({...this.state, startAlgorithm: true})
+            })
+        }
     }
     handleMouseEvents = e => {
         if(e.type === 'mousedown') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
