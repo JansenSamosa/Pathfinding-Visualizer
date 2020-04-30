@@ -13,44 +13,50 @@ export class Cell extends Component {
         const cell = this.state.cell
         //if(this.state.cell.id === `CELL${Math.floor(rows/2)}-0`) this.setState({...this.state, cell: {...cell, type: 'START'}})
         //if(this.state.cell.id === `CELL${Math.floor(rows/2)}-${columns-1}`) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
-        if(this.state.cell.id === `CELL${0}-0`) this.setState({...this.state, cell: {...cell, type: 'START'}})
-        if(this.state.cell.id === `CELL${rows-1}-${columns-1}`) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
+        if(this.state.cell.id === this.props.startCell) this.setState({...this.state, cell: {...cell, type: 'START'}})
+        if(this.state.cell.id === this.props.finishCell) this.setState({...this.state, cell: {...cell, type: 'FINISH'}})
     }
     shouldComponentUpdate(nextProps, nextState) {
         if(this.state !== nextState) return true
-        if(this.props.config.drawType !== nextProps.config.drawType) return true
         else return false
     }
     componentDidUpdate() {
         const cell = this.state.cell
-        //console.log(cell.id)
         this.props.updateCell(cell.row, cell.column, cell)
     }
-    changeType = (type, downReq) => {
-        if(downReq){
-            if(this.props.config.mousehold) {
-                //console.log(this.props.config.drawType)
-                const cell = this.state.cell
-                this.setState({...this.state, cell: {...cell, type}})
-            }
-        } else {
-            //console.log(this.props.config.drawType)
-                const cell = this.state.cell
-                this.setState({...this.state, cell: {...cell, type}})
-        }
-    }
-    mouseDown = (e, type) => {
-        e.preventDefault()
+    changeType = (type) => {
         const cell = this.state.cell
         this.setState({...this.state, cell: {...cell, type}})
+    }
+    draw = () => {
+        if(this.props.config.mousehold && this.state.cell.type !== 'START' && this.state.cell.type !== 'FINISH') {
+            const cell = this.state.cell
+            this.setState({...this.state, cell: {...cell, type: window.drawType}})
+        }
+    }
+    mouseDown = (e) => {
+        e.preventDefault()
+        const cellType = this.state.cell.type
+        if(cellType === 'WALL') {
+            window.drawType='NORMAL'
+            this.changeType('NORMAL')
+        }else if(cellType === 'START') {
+            window.drawType='START'
+        }else if(cellType === 'FINISH') {
+            window.drawType='FINISH'
+        }else {
+            window.drawType='WALL'
+            this.changeType('WALL')
+        }
+        this.draw()
     }
     render() {
         return (
             <div 
                 className={`grid-cell ${this.state.cell.type}`} 
-                onMouseOver={this.changeType.bind(this, this.props.config.drawType, true)}
-                onMouseLeave={this.changeType.bind(this, this.props.config.drawType, true)}
-                onMouseDown={e => this.mouseDown(e, this.props.config.drawType)}
+                onMouseOver={this.draw}
+                onMouseLeave={this.draw}
+                onMouseDown={e => this.mouseDown(e)}
             >
                 <div className='grid-cell-background'></div>
             </div>

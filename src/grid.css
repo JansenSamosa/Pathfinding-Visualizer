@@ -1,7 +1,7 @@
 .grid {
     margin: auto;
     position: relative;
-    top: 100px;
+    top: 20px;
 }
 .grid-cell {
     width:25px;
@@ -32,10 +32,12 @@
 }
 .START .grid-cell-background{
     background-color: red;
+    cursor: move;
     z-index: 2;
 }
 .FINISH .grid-cell-background{
     background-color: green;
+    cursor: move;
     z-index: 2;
 }
 .PATH .grid-cell-background{

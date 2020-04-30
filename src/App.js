@@ -11,7 +11,7 @@ export class App extends Component {
     constructor(props) {
         super(props)
 
-        const rows = 30
+        const rows = 35
         const columns = 70  
 
         let grid = []
@@ -33,13 +33,17 @@ export class App extends Component {
                 rows,
                 columns,
                 mousehold: false,
-                drawType: 'WALL',
                 algorithm: 'a*',
                 overdrive: 1,
             },
             grid,
+            startCell: `CELL${Math.floor(rows/2)}-0`,
+            finishCell: `CELL${Math.floor(rows/2)}-${columns-1}`,
             startAlgorithm: false,
         }
+        window.updateApp = this.forceUpdate.bind(this)
+        window.drawType = 'NORMAL'
+        window.pathLength = 0
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handKeyEvents.bind(this))
@@ -49,9 +53,7 @@ export class App extends Component {
     handKeyEvents = e => {
         if(e.key === 'n') this.perlinNoiseMap()
         if(e.key === 'p') {
-            this.setState({...this.state, startAlgorithm: false}, () => {
-                this.setState({...this.state, startAlgorithm: true})
-            })
+            this.resetAlgorithm()
         }
     }
     handleMouseEvents = e => {
@@ -63,28 +65,48 @@ export class App extends Component {
         else if(this.state.config !== nextState.config) return true
         else return true
     }
-    componentDidUpdate() {
-        console.log(this.state)
-    }
     perlinNoiseMap = () => {
+        this.stopAlgorithm()
         const perlin = new tumult.PerlinN()
         for(let r = 0; r < this.state.config.rows; r++) {
             for(let c = 0; c < this.state.config.columns; c++) {
                 if(this.state.grid[r][c].type !== 'START' && this.state.grid[r][c].type !== 'FINISH') {
                     const val = Math.abs(perlin.gen(c/3, r/3))
-                    if(this.state.grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL', false)
+                    if(this.state.grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL')
                     if(val > .25) {
-                        window.cellRefs[r][c].changeType('WALL', false)
+                        window.cellRefs[r][c].changeType('WALL')
                     }
                 }
             }
         }
     }
+    resetAlgorithm = () => {
+        this.setState({...this.state, startAlgorithm: false}, () => {
+            this.setState({...this.state, startAlgorithm: true})
+        })
+    }
+    stopAlgorithm = () => {
+        this.setState({...this.state, startAlgorithm: false})
+    }
     updateCell = (r, c, newCell) => {
         let newGrid = Object.assign([], this.state.grid)
+        let startCell = this.state.startCell
+        let finishCell = this.state.finishCell
+
         newGrid[r][c] = []
         newGrid[r][c] = newCell
-        this.setState({...this.state, grid: newGrid})
+
+        if(newCell.type === 'START' && newCell.id !== startCell) {
+            const indices = startCell.replace('CELL', '').replace('-', ' ').split(' ')
+            window.cellRefs[indices[0]][indices[1]].changeType('NORMAL')
+            startCell = newCell.id
+        }
+        if(newCell.type === 'FINISH' && newCell.id !== finishCell) {
+            const indices = finishCell.replace('CELL', '').replace('-', ' ').split(' ')
+            window.cellRefs[indices[0]][indices[1]].changeType('NORMAL')
+            finishCell = newCell.id
+        }
+        this.setState({...this.state, grid: newGrid, startCell, finishCell})
     }
     renderGrid = () => {
         return this.state.grid.map((row, index1) => {
@@ -98,7 +120,11 @@ export class App extends Component {
                                 key={cell.id} 
                                 cell={cell} 
                                 updateCell={this.updateCell} 
-                                config={this.state.config}/>
+                                changeDrawWallType={this.changeDrawWallType}
+                                config={this.state.config}
+                                startCell={this.state.startCell}
+                                finishCell={this.state.finishCell}
+                                />
                         )
                     })}
                 </div>
@@ -108,9 +134,11 @@ export class App extends Component {
     render() {
         return (
             <div className='app'>
-                <input type='text' value={this.state.config.drawType} onChange={e => this.setState({...this.state, config: {...this.state.config, drawType: e.target.value}})}/>
-                <input type='text' value={this.state.config.algorithm} onChange={e => this.setState({...this.state, config: {...this.state.config, algorithm: e.target.value}})}/>
-                <input type='number' value={this.state.config.overdrive} onChange={e => this.setState({...this.state, config: {...this.state.config, overdrive: e.target.value}})}/>
+                <div style={{position:'fixed', zIndex: 5}}>
+                    <input type='text' value={this.state.config.algorithm} onChange={e => this.setState({...this.state, config: {...this.state.config, algorithm: e.target.value}})}/>
+                    <input type='number' value={this.state.config.overdrive} onChange={e => this.setState({...this.state, config: {...this.state.config, overdrive: e.target.value}})}/>
+                    <p style={{float:'right'}}>Path Length: {` ${window.pathLength}`}</p>
+                </div>
                 <div className='grid' style={{width: `${this.state.config.columns * 25 + (this.state.config.columns * 2 * 1)}px`}}>
                     {this.renderGrid()}
                 </div>

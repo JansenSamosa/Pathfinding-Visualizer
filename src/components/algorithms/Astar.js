@@ -8,7 +8,8 @@ export class Astar extends Component {
             ...this.defineGrid(),
             open: [],
             closed: [],
-            D: 10
+            D: 10,
+            done: false
         }
     }
     defineGrid = (oldGrid) => {
@@ -41,7 +42,7 @@ export class Astar extends Component {
             for(let c = 0; c < this.props.grid[r].length; c++) {
                 const cell = this.props.grid[r][c]
                 if(cell.type === 'CLOSE' || cell.type === 'OPEN' || cell.type === 'PATH') {
-                    window.cellRefs[r][c].changeType('NORMAL', false)
+                    window.cellRefs[r][c].changeType('NORMAL')
                 }
             }
         }
@@ -66,12 +67,12 @@ export class Astar extends Component {
         try {
             const finishCell = this.getCellByID(this.state.finishCell)
             const D = this.state.D
+            const D2 = D * Math.sqrt(2)
             const x1 = cell.column; const y1 = cell.row; const x2 = finishCell.column; const y2 = finishCell.row
             const dx = Math.abs(x1 - x2)
             const dy = Math.abs(y1 - y2)
             //const h = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) * D //EUCLIDIAN DISTANCE
             //const h = D * (dx + dy) //MANHATTAN DISTANCE
-            const D2 = D * Math.sqrt(2)
             const h = D * (dx + dy) + (D2 - 2*D) * Math.min(dx, dy) //OCTILE DISTANCE
             return h
         } catch(e) {return 99999}
@@ -139,7 +140,7 @@ export class Astar extends Component {
         open.push(cell)
         this.setState({...this.state, open})
         if(cell.id !== this.state.startCell && cell.id !== this.state.finishCell) {
-            window.cellRefs[cell.row][cell.column].changeType('OPEN', false)
+            window.cellRefs[cell.row][cell.column].changeType('OPEN')
         }
     }
     closeCell = cell => {
@@ -148,7 +149,7 @@ export class Astar extends Component {
         closed.push(cell)
         open = open.filter(c => c.id !== cell.id)
         if(cell.id !== this.state.startCell && cell.id !== this.state.finishCell) {
-            window.cellRefs[cell.row][cell.column].changeType('CLOSE', false)
+            window.cellRefs[cell.row][cell.column].changeType('CLOSE')
         }
         this.setState({...this.state, closed, open})
     }
@@ -173,6 +174,7 @@ export class Astar extends Component {
                 
  
                 if(current.id === this.state.finishCell) {
+                    this.setState({...this.state, done: true})
                     this.showPath()
                     clearInterval(this.astar)
                     //path found 
@@ -190,6 +192,9 @@ export class Astar extends Component {
                         } 
                     }
                 }
+                if(this.state.open.length === 0) {
+                    clearInterval(this.astar)
+                }
                 //console.log(n)
                 n++
             }
@@ -198,19 +203,20 @@ export class Astar extends Component {
     showPath = () => {
         let path = []
         let current = this.getCellByID(this.state.finishCell)
+        window.pathLength = current.gCost
+        window.updateApp()
         while(current.id !== this.state.startCell) {
             const prevCell = this.getCellByID(current.prevCell)
             path.push(prevCell)
             current = prevCell
         }
         path.reverse()
-        console.log(path)
         
         let index = 0
         this.spAlg = setInterval(() => {
             const cell = path[index]
             if(cell.id !== this.state.startCell && cell.id !== this.state.finishCell) {
-                window.cellRefs[cell.row][cell.column].changeType('PATH', false)
+                window.cellRefs[cell.row][cell.column].changeType('PATH')
             }
             if(index === path.length - 1) {
                 clearInterval(this.spAlg)
