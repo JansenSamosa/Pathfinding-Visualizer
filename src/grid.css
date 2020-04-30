@@ -31,11 +31,13 @@
     100% {width:29px; height:29px; top: -2px; left: -2px; background-color: rgb(0, 1, 83)}
 }
 .START .grid-cell-background{
+    width:29px; height:29px; top: -2px; left: -2px;
     background-color: red;
     cursor: move;
     z-index: 2;
 }
 .FINISH .grid-cell-background{
+    width:29px; height:29px; top: -2px; left: -2px;
     background-color: green;
     cursor: move;
     z-index: 2;
@@ -45,7 +47,7 @@
     z-index: 2;
 }
 .OPEN .grid-cell-background{
-    background-color: rgb(51, 82, 255);
+    background-color: rgb(118, 139, 255);
     z-index: 2;
     animation: growshrinkop 200ms;
 }
@@ -53,12 +55,11 @@
     background-color: rgb(178, 177, 231);
     z-index: 2;
 }
-
-@keyframes growshrinkop {
-    0% {width:8px; height:8px;top: 7px;left: 7px}
-    100% {width:25px; height: 25px;}
+@keyframes openToClose {
+    0% {background-color: purple;}
+    100% {background-color: rgb(178, 177, 231);}
 }
-.CURRENT .grid-cell-background{
-    background-color: rgb(255, 153, 58);
-    z-index: 2;
+@keyframes growshrinkop {
+    0% {width:8px; height:8px;top: 7px;left: 7px;}
+    100% {width:25px; height: 25px;}
 }

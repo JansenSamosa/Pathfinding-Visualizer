@@ -98,7 +98,6 @@ export class App extends Component {
         let startCell = this.state.startCell
         let finishCell = this.state.finishCell
 
-        newGrid[r][c] = []
         newGrid[r][c] = newCell
 
         if(newCell.type === 'START' && newCell.id !== startCell) {

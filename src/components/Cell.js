@@ -29,6 +29,9 @@ export class Cell extends Component {
         this.setState({...this.state, cell: {...cell, type}})
     }
     draw = () => {
+        if(this.state.cell.type === 'WALL') {
+            if(window.drawType === 'START' || window.drawType === 'FINISH') return null
+        }
         if(this.props.config.mousehold && this.state.cell.type !== 'START' && this.state.cell.type !== 'FINISH') {
             const cell = this.state.cell
             this.setState({...this.state, cell: {...cell, type: window.drawType}})
