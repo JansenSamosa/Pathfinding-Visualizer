@@ -35,6 +35,8 @@ export class App extends Component {
                 mousehold: false,
                 algorithm: 'a*',
                 overdrive: 1,
+                perlinDensity: 1,
+                perlinThresh: .22
             },
             grid,
             startCell: `CELL${Math.floor(rows/2)}-0`,
@@ -43,7 +45,10 @@ export class App extends Component {
         }
         window.updateApp = this.forceUpdate.bind(this)
         window.drawType = 'NORMAL'
-        window.pathLength = 0
+        window.stats = {
+            pathLength: 0,
+            timeElapsed: 0
+        }
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handKeyEvents.bind(this))
@@ -71,9 +76,9 @@ export class App extends Component {
         for(let r = 0; r < this.state.config.rows; r++) {
             for(let c = 0; c < this.state.config.columns; c++) {
                 if(this.state.grid[r][c].type !== 'START' && this.state.grid[r][c].type !== 'FINISH') {
-                    const val = Math.abs(perlin.gen(c/3, r/3))
+                    const val = Math.abs(perlin.gen(c/10*this.state.config.perlinDensity, r/10*this.state.config.perlinDensity))
                     if(this.state.grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL')
-                    if(val > .25) {
+                    if(val > this.state.config.perlinThresh) {
                         window.cellRefs[r][c].changeType('WALL')
                     }
                 }
@@ -137,7 +142,10 @@ export class App extends Component {
                 <div style={{position:'fixed', zIndex: 5}}>
                     <input type='text' value={this.state.config.algorithm} onChange={e => this.setState({...this.state, config: {...this.state.config, algorithm: e.target.value}})}/>
                     <input type='number' value={this.state.config.overdrive} onChange={e => this.setState({...this.state, config: {...this.state.config, overdrive: e.target.value}})}/>
-                    <p style={{float:'right'}}>Path Length: {` ${window.pathLength}`}</p>
+                    <input type='number' value={this.state.config.perlinDensity} onChange={e => this.setState({...this.state, config: {...this.state.config, perlinDensity: e.target.value}})}/>
+                    <input type='number' value={this.state.config.perlinThresh} onChange={e => this.setState({...this.state, config: {...this.state.config, perlinThresh: e.target.value}})}/>
+                    <p style={{float:'right', position:'relative', left:'20px'}}>Timer: {` ${window.stats.timeElapsed}s`}</p>
+                    <p style={{float:'right'}}>Path Length: {` ${window.stats.pathLength}`}</p>
                 </div>
                 <div className='grid' style={{width: `${this.state.config.columns * 25 + (this.state.config.columns * 2 * 1)}px`}}>
                     {this.renderGrid()}

@@ -9,7 +9,7 @@ export class Astar extends Component {
             open: [],
             closed: [],
             D: 10,
-            done: false
+            done: false,
         }
     }
     defineGrid = (oldGrid) => {
@@ -154,7 +154,8 @@ export class Astar extends Component {
         this.setState({...this.state, closed, open})
     }
     algorithm = () => {
-        let n = 0
+        const startDate = new Date()
+        const startTime = startDate.getTime()
         this.openCell(this.getCellByID(this.state.startCell))
         this.astar = setInterval(() => {
             for(let j = 0; j < this.props.config.overdrive; j++) {
@@ -176,6 +177,9 @@ export class Astar extends Component {
                 if(current.id === this.state.finishCell) {
                     this.setState({...this.state, done: true})
                     this.showPath()
+                    const finishDate = new Date()
+                    window.stats.timeElapsed = (finishDate.getTime() - startTime)/1000
+                    window.updateApp()
                     clearInterval(this.astar)
                     //path found 
                 }
@@ -193,17 +197,18 @@ export class Astar extends Component {
                     }
                 }
                 if(this.state.open.length === 0) {
+                    const finishDate = new Date()
+                    window.stats.timeElapsed = (finishDate.getTime() - startTime)/1000
+                    window.updateApp()
                     clearInterval(this.astar)
                 }
-                //console.log(n)
-                n++
             }
         }, 1)
     }
     showPath = () => {
         let path = []
         let current = this.getCellByID(this.state.finishCell)
-        window.pathLength = current.gCost
+        window.stats.pathLength = current.gCost
         window.updateApp()
         while(current.id !== this.state.startCell) {
             const prevCell = this.getCellByID(current.prevCell)
