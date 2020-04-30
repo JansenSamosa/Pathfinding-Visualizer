@@ -34,11 +34,11 @@ export class App extends Component {
                 columns,
                 mousehold: false,
                 drawType: 'WALL',
-                algorithm: 'a',
+                algorithm: 'a*',
                 overdrive: 1,
             },
             grid,
-            startAlgorithm: true,
+            startAlgorithm: false,
         }
     }
     componentDidMount() {
