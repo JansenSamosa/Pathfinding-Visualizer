@@ -11,9 +11,9 @@ export class App extends Component {
     constructor(props) {
         super(props)
 
-        const rows = 35
-        const columns = 70  
-
+        const rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
+        const columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
+        console.log(window.innerWidth/25)
         let grid = []
         window.cellRefs = []
         for(let r = 0; r < rows; r++) {

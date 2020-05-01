@@ -108,7 +108,7 @@ export class Astar extends Component {
         if(bottom) neighbors.push(grid[row+1][column])
         if(left) neighbors.push(grid[row][column-1])
         if(right) neighbors.push(grid[row][column+1])
-
+        
         if(top && right) {
             if(grid[row-1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row-1][column+1])
         }
@@ -121,7 +121,7 @@ export class Astar extends Component {
         if(bottom && left){
             if(grid[row+1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row+1][column-1])
         } 
-
+        
         neighbors = neighbors.filter(n => n.type !== 'WALL')
         
         for(let i = 0; i< closed.length; i++) {
