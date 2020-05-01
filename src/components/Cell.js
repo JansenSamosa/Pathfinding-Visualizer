@@ -59,6 +59,7 @@ export class Cell extends Component {
                 className={`grid-cell ${this.state.cell.type}`} 
                 onMouseOver={this.draw}
                 onMouseLeave={this.draw}
+                onTouchMove={this.draw}
                 onMouseDown={e => this.mouseDown(e)}
             >
                 <div className='grid-cell-background'></div>

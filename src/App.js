@@ -11,8 +11,9 @@ export class App extends Component {
     constructor(props) {
         super(props)
 
-        const rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
-        const columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
+        let rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
+        let columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
+        if(columns > 100) columns = 100
         console.log(window.innerWidth/25)
         let grid = []
         window.cellRefs = []
@@ -54,6 +55,8 @@ export class App extends Component {
         document.addEventListener('keydown', this.handKeyEvents.bind(this))
         document.addEventListener('mousedown', this.handleMouseEvents.bind(this))
         document.addEventListener('mouseup', this.handleMouseEvents.bind(this))
+        document.addEventListener('touchstart', this.handleMouseEvents.bind(this))
+        document.addEventListener('touchend', this.handleMouseEvents.bind(this))
     }
     handKeyEvents = e => {
         if(e.key === 'n') this.perlinNoiseMap()
@@ -62,13 +65,16 @@ export class App extends Component {
         }
     }
     handleMouseEvents = e => {
-        if(e.type === 'mousedown') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
-        if(e.type === 'mouseup') this.setState({...this.state, config: {...this.state.config, mousehold: false}})
+        if(e.type === 'mousedown' || e.type === 'touchstart') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
+        if(e.type === 'mouseup' || e.type === 'touchend') this.setState({...this.state, config: {...this.state.config, mousehold: false}})
     }
     shouldComponentUpdate(nextProps, nextState) {
         if(this.state.grid !== nextState.grid) return false
         else if(this.state.config !== nextState.config) return true
         else return true
+    }
+    componentDidUpdate() {
+        console.log(this.state.config.mousehold)
     }
     perlinNoiseMap = () => {
         this.stopAlgorithm()
