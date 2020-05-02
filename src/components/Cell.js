@@ -26,6 +26,9 @@ export class Cell extends Component {
     }
     changeType = (type) => {
         const cell = this.state.cell
+        if(type === 'WALL') {
+            if(cell.type === 'START' || cell.type === 'FINISH') return null
+        }
         this.setState({...this.state, cell: {...cell, type}})
     }
     draw = () => {

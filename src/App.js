@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import tumult from 'tumult'
 
 import Cell from './components/Cell'
 import Algorithm from './components/algorithms/Algorithm'
+import Generator from './components/generators/Generator'
 
 import './App.css'
 import './grid.css'
@@ -14,7 +14,8 @@ export class App extends Component {
         let rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
         let columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
         if(columns > 100) columns = 100
-        console.log(window.innerWidth/25)
+        if(rows%2 === 0) rows--
+        if(columns%2 === 0) columns--
         let grid = []
         window.cellRefs = []
         for(let r = 0; r < rows; r++) {
@@ -44,6 +45,7 @@ export class App extends Component {
             finishCell: `CELL${Math.floor(rows/2)}-${columns-1}`,
             startAlgorithm: false,
         }
+        this.genRef = React.createRef()
         window.updateApp = this.forceUpdate.bind(this)
         window.drawType = 'NORMAL'
         window.stats = {
@@ -59,10 +61,9 @@ export class App extends Component {
         document.addEventListener('touchend', this.handleMouseEvents.bind(this))
     }
     handKeyEvents = e => {
-        if(e.key === 'n') this.perlinNoiseMap()
-        if(e.key === 'p') {
-            this.resetAlgorithm()
-        }
+        if(e.key === 'n') this.generateMap('perlin')
+        if(e.key === 'm') this.generateMap('maze')
+        if(e.key === 'p') this.resetAlgorithm()
     }
     handleMouseEvents = e => {
         if(e.type === 'mousedown' || e.type === 'touchstart') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
@@ -73,23 +74,10 @@ export class App extends Component {
         else if(this.state.config !== nextState.config) return true
         else return true
     }
-    componentDidUpdate() {
-        console.log(this.state.config.mousehold)
-    }
-    perlinNoiseMap = () => {
+    generateMap = mapType => {
         this.stopAlgorithm()
-        const perlin = new tumult.PerlinN()
-        for(let r = 0; r < this.state.config.rows; r++) {
-            for(let c = 0; c < this.state.config.columns; c++) {
-                if(this.state.grid[r][c].type !== 'START' && this.state.grid[r][c].type !== 'FINISH') {
-                    const val = Math.abs(perlin.gen(c/10*this.state.config.perlinDensity, r/10*this.state.config.perlinDensity))
-                    if(this.state.grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL')
-                    if(val > this.state.config.perlinThresh) {
-                        window.cellRefs[r][c].changeType('WALL')
-                    }
-                }
-            }
-        }
+        if(mapType === 'perlin') this.genRef.current.genPerlinNoise()
+        if(mapType === 'maze') this.genRef.current.genRecursiveBacktrackerMaze()
     }
     resetAlgorithm = () => {
         this.setState({...this.state, startAlgorithm: false}, () => {
@@ -156,7 +144,7 @@ export class App extends Component {
                     {this.renderGrid()}
                 </div>
                 <Algorithm grid={this.state.grid} config={this.state.config} startAlgorithm={this.state.startAlgorithm}/>
-                
+                <Generator grid={this.state.grid} config={this.state.config} ref={this.genRef}/>
             </div>
         )
     }
