@@ -94,7 +94,7 @@ export class App extends Component {
             for(let c = 0; c < this.state.grid[r].length; c++) {
                 const cell = this.state.grid[r][c]
                 if(cell.type === 'WALL' || cell.type === 'PATH' 
-                    || cell.type === 'OPEN' || cell.type === 'CLOSED') window.cellRefs[r][c].changeType('NORMAL')
+                    || cell.type === 'OPEN' || cell.type === 'CLOSE') window.cellRefs[r][c].changeType('NORMAL')
             }
         }
     }
