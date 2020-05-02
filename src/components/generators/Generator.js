@@ -11,7 +11,7 @@ export class Generator extends Component {
             for(let c = 0; c < config.columns; c++) {
                 if(grid[r][c].type !== 'START' && grid[r][c].type !== 'FINISH') {
                     const val = Math.abs(perlin.gen(c/10*config.perlinDensity, r/10*config.perlinDensity))
-                    if(grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL')
+                    //if(grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL')
                     if(val > config.perlinThresh) {
                         window.cellRefs[r][c].changeType('WALL')
                     }

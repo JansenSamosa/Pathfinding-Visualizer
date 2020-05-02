@@ -61,6 +61,7 @@ export class App extends Component {
         document.addEventListener('touchend', this.handleMouseEvents.bind(this))
     }
     handKeyEvents = e => {
+        if(e.key === 'c') this.clearGrid()
         if(e.key === 'n') this.generateMap('perlin')
         if(e.key === 'm') this.generateMap('maze')
         if(e.key === 'p') this.resetAlgorithm()
@@ -76,6 +77,7 @@ export class App extends Component {
     }
     generateMap = mapType => {
         this.stopAlgorithm()
+        this.clearGrid()
         if(mapType === 'perlin') this.genRef.current.genPerlinNoise()
         if(mapType === 'maze') this.genRef.current.genRecursiveBacktrackerMaze()
     }
@@ -86,6 +88,15 @@ export class App extends Component {
     }
     stopAlgorithm = () => {
         this.setState({...this.state, startAlgorithm: false})
+    }
+    clearGrid = () => {
+        for(let r = 0; r < this.state.grid.length; r++) {
+            for(let c = 0; c < this.state.grid[r].length; c++) {
+                const cell = this.state.grid[r][c]
+                if(cell.type === 'WALL' || cell.type === 'PATH' 
+                    || cell.type === 'OPEN' || cell.type === 'CLOSED') window.cellRefs[r][c].changeType('NORMAL')
+            }
+        }
     }
     updateCell = (r, c, newCell) => {
         let newGrid = Object.assign([], this.state.grid)
