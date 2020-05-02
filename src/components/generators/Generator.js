@@ -106,7 +106,6 @@ export class Generator extends Component {
             num++
             if(stack.length === 0) {
                 window.lock = false
-
                 clearInterval(this.mazeAlg) 
             }
         }, 1)

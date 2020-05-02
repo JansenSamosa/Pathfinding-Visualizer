@@ -63,8 +63,8 @@ export class App extends Component {
     }
     handKeyEvents = e => {
         if(e.key === 'c') this.clearGrid()
-        if(e.key === 'p') this.resetAlgorithm()
         if(!window.lock) {
+            if(e.key === 'p') this.resetAlgorithm()
             if(e.key === 'n') this.generateMap('perlin')
             if(e.key === 'm') this.generateMap('maze')
         }  
