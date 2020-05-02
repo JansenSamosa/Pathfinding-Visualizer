@@ -99,6 +99,7 @@ export class App extends Component {
     }
     clearGrid = () => {
         window.lock = false
+        this.stopAlgorithm()
         for(let r = 0; r < this.state.grid.length; r++) {
             for(let c = 0; c < this.state.grid[r].length; c++) {
                 const cell = this.state.grid[r][c]
