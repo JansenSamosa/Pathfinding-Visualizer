@@ -154,9 +154,12 @@ export class Astar extends Component {
         this.setState({...this.state, closed, open})
     }
     algorithm = () => {
+        window.lock = true
         const startDate = new Date()
         const startTime = startDate.getTime()
         this.openCell(this.getCellByID(this.state.startCell))
+        const speed = this.props.config.overdrive < 1 ? (1 - this.props.config.overdrive) * 100 : 1
+        console.log(speed)
         this.astar = setInterval(() => {
             for(let j = 0; j < this.props.config.overdrive; j++) {
                 let current = this.getCellByID(this.state.open[0].id)
@@ -203,7 +206,7 @@ export class Astar extends Component {
                     clearInterval(this.astar)
                 }
             }
-        }, 1)
+        }, speed)
     }
     showPath = () => {
         let path = []
@@ -225,6 +228,7 @@ export class Astar extends Component {
             }
             if(index === path.length - 1) {
                 clearInterval(this.spAlg)
+                window.lock = false
             }
             index++
         }, 20)

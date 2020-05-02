@@ -7,7 +7,7 @@
     width:25px;
     height:25px;
     float: left;
-    border: 1px solid lightblue;
+    border: 1px solid rgb(240, 240, 248);
     cursor: crosshair;
 }
 .grid-cell-background {
@@ -20,40 +20,49 @@
     z-index: 2;
 }
 .WALL .grid-cell-background{
-    background-color: rgb(31, 9, 110);
+    background-color: rgb(31, 30, 73);
     animation: growshrink 350ms;
-    width:29px; height:29px; top: -2px; left: -2px;
-    z-index: 3;
+    width:25px; height:25px; left: -2px; top: -2px;
+    border:2px solid rgb(31, 30, 73);
+    z-index: 7;
 }
 @keyframes growshrink {
-    0% {width:8px; height:8px;top: 7px;left: 7px; background-color: rgb(0, 1, 83)}
-    65% {width:35px; height:35px; top: -6px; left: -6px; background-color: rgb(76, 0, 139)}
-    100% {width:29px; height:29px; top: -2px; left: -2px; background-color: rgb(0, 1, 83)}
+    0% {width:8px; height:8px;top: 7px;left: 7px; background-color: rgb(8, 7, 70); border:2px solid rgb(8, 7, 70)}
+    65% {width:35px; height:35px; top: -6px; left: -6px; background-color: rgb(20, 18, 122); border:2px solid rgb(20, 18, 122)}
+    100% {width:25px; height:25px; left: -2px; top: -2px; border:2px solid rgb(8, 7, 70); background-color: rgb(8, 7, 70)}
 }
 .START .grid-cell-background{
-    width:29px; height:29px; top: -2px; left: -2px;
-    background-color: red;
+    width:25px; height:25px; left: -2px; top: -2px;
+    border:2px solid rgb(206, 50, 50);
+    background-color: rgb(255, 102, 102);
     cursor: move;
-    z-index: 2;
+    z-index: 10;
 }
 .FINISH .grid-cell-background{
-    width:29px; height:29px; top: -2px; left: -2px;
-    background-color: green;
+    width:25px; height:25px; left: -2px; top: -2px;
+    border:2px solid rgb(63, 189, 63);
+    background-color: rgb(121, 218, 121);
     cursor: move;
-    z-index: 2;
+    z-index: 10;
 }
 .PATH .grid-cell-background{
-    background-color: purple;
-    z-index: 2;
+    width:25px; height:25px; left: -2px; top: -2px;
+    border:2px solid rgb(255, 208, 0);
+    background-color: #fff897;
+    z-index: 5;
 }
 .OPEN .grid-cell-background{
-    background-color: rgb(118, 139, 255);
-    z-index: 2;
+    width:25px; height:25px; left: -2px; top: -2px;
+    border:2px solid rgb(36, 30, 119);
+    background-color: rgb(48, 40, 165);
+    z-index: 4;
     animation: growshrinkop 200ms;
 }
 .CLOSE .grid-cell-background{
-    background-color: rgb(178, 177, 231);
-    z-index: 2;
+    width:25px; height:25px; left: -2px; top: -2px;
+    border:2px solid rgb(157, 165, 235);
+    background-color: rgb(177, 190, 231);
+    z-index: 3;
 }
 @keyframes openToClose {
     0% {background-color: purple;}

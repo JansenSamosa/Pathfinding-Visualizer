@@ -3,6 +3,10 @@ import React, { Component } from 'react'
 import Astar from './Astar'
 
 export class Algorithm extends Component {
+    shouldComponentUpdate() {
+        if(window.lock) return false //if locked, dont pass new props
+        else return true
+    }
     startAlgorithm = alg => {
         if(this.props.startAlgorithm) {
             if(alg === 'a*' || alg === 'djisktras' || alg === 'greedy') {

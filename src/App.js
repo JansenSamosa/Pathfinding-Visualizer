@@ -41,8 +41,8 @@ export class App extends Component {
                 perlinThresh: .22
             },
             grid,
-            startCell: `CELL${Math.floor(rows/2)}-0`,
-            finishCell: `CELL${Math.floor(rows/2)}-${columns-1}`,
+            startCell: `CELL${Math.floor(rows/2)}-1`,
+            finishCell: `CELL${Math.floor(rows/2)}-${columns-2}`,
             startAlgorithm: false,
         }
         this.genRef = React.createRef()
@@ -52,6 +52,7 @@ export class App extends Component {
             pathLength: 0,
             timeElapsed: 0
         }
+        window.lock = false
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handKeyEvents.bind(this))
@@ -62,13 +63,17 @@ export class App extends Component {
     }
     handKeyEvents = e => {
         if(e.key === 'c') this.clearGrid()
-        if(e.key === 'n') this.generateMap('perlin')
-        if(e.key === 'm') this.generateMap('maze')
         if(e.key === 'p') this.resetAlgorithm()
+        if(!window.lock) {
+            if(e.key === 'n') this.generateMap('perlin')
+            if(e.key === 'm') this.generateMap('maze')
+        }  
     }
     handleMouseEvents = e => {
-        if(e.type === 'mousedown' || e.type === 'touchstart') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
-        if(e.type === 'mouseup' || e.type === 'touchend') this.setState({...this.state, config: {...this.state.config, mousehold: false}})
+        if(!window.lock) {
+            if(e.type === 'mousedown' || e.type === 'touchstart') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
+            if(e.type === 'mouseup' || e.type === 'touchend') this.setState({...this.state, config: {...this.state.config, mousehold: false}})
+        }
     }
     shouldComponentUpdate(nextProps, nextState) {
         if(this.state.grid !== nextState.grid) return false
@@ -78,18 +83,22 @@ export class App extends Component {
     generateMap = mapType => {
         this.stopAlgorithm()
         this.clearGrid()
+        window.lock = true
         if(mapType === 'perlin') this.genRef.current.genPerlinNoise()
         if(mapType === 'maze') this.genRef.current.genRecursiveBacktrackerMaze()
     }
     resetAlgorithm = () => {
+        window.lock = false
         this.setState({...this.state, startAlgorithm: false}, () => {
             this.setState({...this.state, startAlgorithm: true})
         })
     }
     stopAlgorithm = () => {
+        window.lock = false
         this.setState({...this.state, startAlgorithm: false})
     }
     clearGrid = () => {
+        window.lock = false
         for(let r = 0; r < this.state.grid.length; r++) {
             for(let c = 0; c < this.state.grid[r].length; c++) {
                 const cell = this.state.grid[r][c]

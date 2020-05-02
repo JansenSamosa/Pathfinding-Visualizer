@@ -41,20 +41,22 @@ export class Cell extends Component {
         }
     }
     mouseDown = (e) => {
-        e.preventDefault()
-        const cellType = this.state.cell.type
-        if(cellType === 'WALL') {
-            window.drawType='NORMAL'
-            this.changeType('NORMAL')
-        }else if(cellType === 'START') {
-            window.drawType='START'
-        }else if(cellType === 'FINISH') {
-            window.drawType='FINISH'
-        }else {
-            window.drawType='WALL'
-            this.changeType('WALL')
+        if(!window.lock) {
+            e.preventDefault()
+            const cellType = this.state.cell.type
+            if(cellType === 'WALL') {
+                window.drawType='NORMAL'
+                this.changeType('NORMAL')
+            }else if(cellType === 'START') {
+                window.drawType='START'
+            }else if(cellType === 'FINISH') {
+                window.drawType='FINISH'
+            }else {
+                window.drawType='WALL'
+                this.changeType('WALL')
+            }
+            this.draw()
         }
-        this.draw()
     }
     render() {
         return (

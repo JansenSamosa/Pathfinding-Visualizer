@@ -5,6 +5,7 @@ export class Generator extends Component {
 
     // PERLIN NOISE
     genPerlinNoise = () => {
+        window.lock = true
         const { config, grid } = this.props
         const perlin = new tumult.PerlinN()
         for(let r = 0; r < config.rows; r++) {
@@ -18,6 +19,7 @@ export class Generator extends Component {
                 }
             }
         }
+        window.lock = false
     }
     // RECURSIVE BACKTRACKER MAZE
     initializeMaze = () => {
@@ -64,9 +66,10 @@ export class Generator extends Component {
         
         if(top) neighbors.push(mazeGrid[mazeRow-1][mazeColumn])
         if(bottom) neighbors.push(mazeGrid[mazeRow+1][mazeColumn])
+        
         if(left) neighbors.push(mazeGrid[mazeRow][mazeColumn-1])
         if(right) neighbors.push(mazeGrid[mazeRow][mazeColumn+1])
-        
+
         if(neighbors.length > 0) neighbors = neighbors.filter(c => c.status === 'UNVISITED')
         console.log(neighbors)
         return neighbors
@@ -77,6 +80,7 @@ export class Generator extends Component {
         window.cellRefs[row][column].changeType('NORMAL')  
     }
     genRecursiveBacktrackerMaze = () => {
+        window.lock = true
         let mazeGrid = this.initializeMaze()
         let stack = [mazeGrid[0][0]]
         let visited = []
@@ -100,7 +104,11 @@ export class Generator extends Component {
             //if(num === 100) clearInterval(this.mazeAlg)
             console.log(num)
             num++
-            if(stack.length === 0) clearInterval(this.mazeAlg)
+            if(stack.length === 0) {
+                window.lock = false
+
+                clearInterval(this.mazeAlg) 
+            }
         }, 1)
     }
     render() {
