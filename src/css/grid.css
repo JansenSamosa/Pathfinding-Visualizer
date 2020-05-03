@@ -42,6 +42,7 @@
     width:25px; height:25px; left: -2px; top: -2px;
     border:2px solid rgb(63, 189, 63);
     background-color: rgb(121, 218, 121);
+    background-image: url('../icons/finishnodeicon.png');
     cursor: move;
     z-index: 10;
 }
@@ -49,7 +50,6 @@
     width:25px; height:25px; left: -2px; top: -2px;
     border:2px solid rgb(255, 208, 0);
     background-color: #fff897;
-    animation: closeToPath 250ms;
     z-index: 5;
 }
 .OPEN .grid-cell-background{
@@ -57,13 +57,13 @@
     border:2px solid rgb(125, 117, 241);
     background-color: rgb(148, 124, 253);
     z-index: 4;
-    animation: growshrinkop 500ms;
+    animation: growshrinkop 1000ms;
 }
 .CLOSE .grid-cell-background{
     width:25px; height:25px; left: -2px; top: -2px;
     border:2px solid rgb(157, 165, 235);
     background-color: rgb(177, 190, 231);
-    animation: openToClose 250ms;
+    animation: openToClose 150ms;
     z-index: 3;
 }
 @keyframes closeToPath {
@@ -75,6 +75,8 @@
     100% {border:2px solid rgb(157, 165, 235); background-color: rgb(177, 190, 231);}
 }
 @keyframes growshrinkop {
-    0% {width:8px; height:8px;top: 7px;left: 7px;}
-    100% {width:25px; height: 25px; }
+    0% {width:8px; height:8px;top: 7px;left: 7px;border:2px solid rgb(76, 69, 179);
+        background-color: rgb(78, 59, 161);}
+    100% {width:25px; height: 25px;border:2px solid rgb(125, 117, 241);
+        background-color: rgb(148, 124, 253); }
 }

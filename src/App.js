@@ -4,8 +4,8 @@ import Cell from './components/Cell'
 import Algorithm from './components/algorithms/Algorithm'
 import Generator from './components/generators/Generator'
 
-import './App.css'
-import './grid.css'
+import './css/App.css'
+import './css/grid.css'
 
 export class App extends Component {
     constructor(props) {
