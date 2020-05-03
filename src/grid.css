@@ -49,26 +49,32 @@
     width:25px; height:25px; left: -2px; top: -2px;
     border:2px solid rgb(255, 208, 0);
     background-color: #fff897;
+    animation: closeToPath 250ms;
     z-index: 5;
 }
 .OPEN .grid-cell-background{
     width:25px; height:25px; left: -2px; top: -2px;
-    border:2px solid rgb(36, 30, 119);
-    background-color: rgb(48, 40, 165);
+    border:2px solid rgb(125, 117, 241);
+    background-color: rgb(148, 124, 253);
     z-index: 4;
-    animation: growshrinkop 200ms;
+    animation: growshrinkop 500ms;
 }
 .CLOSE .grid-cell-background{
     width:25px; height:25px; left: -2px; top: -2px;
     border:2px solid rgb(157, 165, 235);
     background-color: rgb(177, 190, 231);
+    animation: openToClose 250ms;
     z-index: 3;
 }
+@keyframes closeToPath {
+    0% {border:2px solid rgb(157, 165, 235); background-color: rgb(177, 190, 231);}
+    100% {border:2px solid rgb(255, 208, 0); background-color: #fff897;}
+}
 @keyframes openToClose {
-    0% {background-color: purple;}
-    100% {background-color: rgb(178, 177, 231);}
+    0% {border:2px solid rgb(125, 117, 241);background-color: rgb(148, 124, 253);}
+    100% {border:2px solid rgb(157, 165, 235); background-color: rgb(177, 190, 231);}
 }
 @keyframes growshrinkop {
     0% {width:8px; height:8px;top: 7px;left: 7px;}
-    100% {width:25px; height: 25px;}
+    100% {width:25px; height: 25px; }
 }
