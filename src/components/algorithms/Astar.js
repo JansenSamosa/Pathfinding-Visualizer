@@ -202,6 +202,7 @@ export class Astar extends Component {
                 if(this.state.open.length === 0) {
                     const finishDate = new Date()
                     window.stats.timeElapsed = (finishDate.getTime() - startTime)/1000
+                    window.lock = false
                     window.updateApp()
                     clearInterval(this.astar)
                 }
