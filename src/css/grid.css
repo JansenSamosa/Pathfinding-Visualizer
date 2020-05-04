@@ -1,7 +1,7 @@
 .grid {
     margin: auto;
     position: relative;
-    top: 20px;
+    top: 12px;
 }
 .grid-cell {
     width:25px;
@@ -50,7 +50,7 @@
     width:25px; height:25px; left: -2px; top: -2px;
     border:2px solid rgb(255, 208, 0);
     background-color: #fff897;
-    z-index: 5;
+    z-index: 6;
 }
 .OPEN .grid-cell-background{
     width:25px; height:25px; left: -2px; top: -2px;

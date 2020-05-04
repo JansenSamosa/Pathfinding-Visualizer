@@ -1,7 +1,11 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 .app {
-  
+}
+
+.button {
+  cursor: pointer;
 }

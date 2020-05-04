@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Cell from './components/Cell'
 import Algorithm from './components/algorithms/Algorithm'
 import Generator from './components/generators/Generator'
+import Interface from './components/interface/Interface'
 
 import './css/App.css'
 import './css/grid.css'
@@ -14,8 +15,9 @@ export class App extends Component {
         let rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
         let columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
         if(columns > 100) columns = 100
-        if(rows%2 === 0) rows--
-        if(columns%2 === 0) columns--
+        if(rows%2 === 0) rows++
+        if(columns%2 === 0) columns++
+        console.log(rows, columns)
         let grid = []
         window.cellRefs = []
         for(let r = 0; r < rows; r++) {
@@ -80,18 +82,25 @@ export class App extends Component {
         else if(this.state.config !== nextState.config) return true
         else return true
     }
+    setConfig = newConfig => {
+        this.setState({...this.state, config: newConfig})
+    }
     generateMap = mapType => {
-        this.stopAlgorithm()
-        this.clearGrid()
-        window.lock = true
-        if(mapType === 'perlin') this.genRef.current.genPerlinNoise()
-        if(mapType === 'maze') this.genRef.current.genRecursiveBacktrackerMaze()
+        if(!window.lock) {
+            this.stopAlgorithm()
+            this.clearGrid()
+            window.lock = true
+            if(mapType === 'perlin') this.genRef.current.genPerlinNoise()
+            if(mapType === 'maze') this.genRef.current.genRecursiveBacktrackerMaze()
+        }
     }
     resetAlgorithm = () => {
-        window.lock = false
-        this.setState({...this.state, startAlgorithm: false}, () => {
-            this.setState({...this.state, startAlgorithm: true})
-        })
+        if(!window.lock) {
+            window.lock = false
+            this.setState({...this.state, startAlgorithm: false}, () => {
+                this.setState({...this.state, startAlgorithm: true})
+            })
+        }
     }
     stopAlgorithm = () => {
         window.lock = false
@@ -153,19 +162,16 @@ export class App extends Component {
     render() {
         return (
             <div className='app'>
-                <div style={{position:'fixed', zIndex: 5}}>
-                    <input type='text' value={this.state.config.algorithm} onChange={e => this.setState({...this.state, config: {...this.state.config, algorithm: e.target.value}})}/>
-                    <input type='number' value={this.state.config.overdrive} onChange={e => this.setState({...this.state, config: {...this.state.config, overdrive: e.target.value}})}/>
-                    <input type='number' value={this.state.config.perlinDensity} onChange={e => this.setState({...this.state, config: {...this.state.config, perlinDensity: e.target.value}})}/>
-                    <input type='number' value={this.state.config.perlinThresh} onChange={e => this.setState({...this.state, config: {...this.state.config, perlinThresh: e.target.value}})}/>
-                    <p style={{float:'right', position:'relative', left:'20px'}}>Timer: {` ${window.stats.timeElapsed}s`}</p>
-                    <p style={{float:'right'}}>Path Length: {` ${window.stats.pathLength}`}</p>
-                </div>
                 <div className='grid' style={{width: `${this.state.config.columns * 25 + (this.state.config.columns * 2 * 1)}px`}}>
                     {this.renderGrid()}
                 </div>
                 <Algorithm grid={this.state.grid} config={this.state.config} startAlgorithm={this.state.startAlgorithm}/>
                 <Generator grid={this.state.grid} config={this.state.config} ref={this.genRef}/>
+                <Interface 
+                    config={this.state.config} 
+                    setConfig={this.setConfig}
+                    resetAlgorithm={this.resetAlgorithm}
+                />
             </div>
         )
     }

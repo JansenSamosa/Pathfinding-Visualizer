@@ -77,7 +77,9 @@ export class Generator extends Component {
     openMazeWall = (fromCell, toCell) => {
         const row = (fromCell.row + toCell.row)/2
         const column = (fromCell.column + toCell.column)/2
-        window.cellRefs[row][column].changeType('NORMAL')  
+        if(this.props.grid[row][column].type !== 'START' && this.props.grid[row][column].type !== 'FINISH'){
+            window.cellRefs[row][column].changeType('NORMAL')  
+        }
     }
     genRecursiveBacktrackerMaze = () => {
         window.lock = true
