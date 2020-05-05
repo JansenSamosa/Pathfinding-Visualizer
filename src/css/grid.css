@@ -1,7 +1,6 @@
 .grid {
     margin: auto;
     position: relative;
-    top: 12px;
 }
 .grid-cell {
     width:25px;

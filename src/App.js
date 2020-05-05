@@ -14,7 +14,7 @@ export class App extends Component {
 
         let rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
         let columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
-        if(columns > 100) columns = 100
+        console.log(rows, columns)
         if(rows%2 === 0) rows++
         if(columns%2 === 0) columns++
         console.log(rows, columns)
@@ -36,7 +36,6 @@ export class App extends Component {
             config: {
                 rows,
                 columns,
-                mousehold: false,
                 overdrive: 1,
                 perlinDensity: 1,
                 perlinThresh: .22
@@ -55,6 +54,7 @@ export class App extends Component {
             timeElapsed: 0
         }
         window.lock = false
+        window.mousehold = false
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handKeyEvents.bind(this))
@@ -73,14 +73,17 @@ export class App extends Component {
     }
     handleMouseEvents = e => {
         if(!window.lock) {
-            if(e.type === 'mousedown' || e.type === 'touchstart') this.setState({...this.state, config: {...this.state.config, mousehold: true}})
-            if(e.type === 'mouseup' || e.type === 'touchend') this.setState({...this.state, config: {...this.state.config, mousehold: false}})
+            if(e.type === 'mousedown' || e.type === 'touchstart') window.mousehold = true
+            if(e.type === 'mouseup' || e.type === 'touchend') window.mousehold = false
         }
     }
     shouldComponentUpdate(nextProps, nextState) {
         if(this.state.grid !== nextState.grid) return false
         else if(this.state.config !== nextState.config) return true
         else return true
+    }
+    componentDidUpdate() {
+        console.log("HI")
     }
     setConfig = newConfig => {
         this.setState({...this.state, config: newConfig})
@@ -162,7 +165,6 @@ export class App extends Component {
         })
     }
     renderInterface = () => {
-        console.log(window.lock)
         if(!window.lock) {
             return <Interface 
                         config={this.state.config} 
