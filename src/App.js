@@ -123,6 +123,7 @@ export class App extends Component {
         }
     }
     updateCell = (r, c, newCell) => {
+        console.log("ASD")
         let newGrid = Object.assign([], this.state.grid)
         let startCell = this.state.startCell
         let finishCell = this.state.finishCell
