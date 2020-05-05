@@ -37,7 +37,6 @@ export class App extends Component {
                 rows,
                 columns,
                 mousehold: false,
-                algorithm: 'a*',
                 overdrive: 1,
                 perlinDensity: 1,
                 perlinThresh: .22
@@ -49,6 +48,7 @@ export class App extends Component {
         }
         this.genRef = React.createRef()
         window.updateApp = this.forceUpdate.bind(this)
+        window.algorithm = 'A*'
         window.drawType = 'NORMAL'
         window.stats = {
             pathLength: 0,
@@ -94,9 +94,11 @@ export class App extends Component {
             if(mapType === 'maze') this.genRef.current.genRecursiveBacktrackerMaze()
         }
     }
-    resetAlgorithm = () => {
+    runAlgorithm = (algorithm) => {
         if(!window.lock) {
             window.lock = false
+            window.algorithm = algorithm
+            console.log(window.algorithm)
             this.setState({...this.state, startAlgorithm: false}, () => {
                 this.setState({...this.state, startAlgorithm: true})
             })
@@ -159,6 +161,18 @@ export class App extends Component {
             )
         })
     }
+    renderInterface = () => {
+        console.log(window.lock)
+        if(!window.lock) {
+            return <Interface 
+                        config={this.state.config} 
+                        setConfig={this.setConfig}
+                        runAlgorithm={this.runAlgorithm}
+                        generateMap={this.generateMap}
+                        clearGrid={this.clearGrid}
+                    />
+        }
+    }
     render() {
         return (
             <div className='app'>
@@ -167,11 +181,7 @@ export class App extends Component {
                 </div>
                 <Algorithm grid={this.state.grid} config={this.state.config} startAlgorithm={this.state.startAlgorithm}/>
                 <Generator grid={this.state.grid} config={this.state.config} ref={this.genRef}/>
-                <Interface 
-                    config={this.state.config} 
-                    setConfig={this.setConfig}
-                    resetAlgorithm={this.resetAlgorithm}
-                />
+                {this.renderInterface()}
             </div>
         )
     }

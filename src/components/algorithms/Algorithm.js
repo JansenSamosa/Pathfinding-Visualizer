@@ -9,7 +9,7 @@ export class Algorithm extends Component {
     }
     startAlgorithm = alg => {
         if(this.props.startAlgorithm) {
-            if(alg === 'a*' || alg === 'djisktras' || alg === 'greedy') {
+            if(alg === 'A*' || alg === 'Djisktras' || alg === 'Greedy') {
                 return <Astar grid={this.props.grid} config={this.props.config}/>
             }
         } else return null
@@ -17,7 +17,7 @@ export class Algorithm extends Component {
     render() {
         return (
             <div>
-                {this.startAlgorithm(this.props.config.algorithm)}
+                {this.startAlgorithm(window.algorithm)}
             </div>
         )
     }

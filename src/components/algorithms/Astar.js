@@ -5,7 +5,6 @@ export class Astar extends Component {
         super(props)
 
         this.state = {
-            ...this.defineGrid(),
             open: [],
             closed: [],
             D: 10,
@@ -49,7 +48,7 @@ export class Astar extends Component {
         setTimeout(() => {
             this.setState({...this.state, ...this.defineGrid()})
             this.algorithm()
-        }, 100)
+        }, 10)
     }
     componentDidUpdate(nextProps) {
         const { grid } = this.props
@@ -78,9 +77,9 @@ export class Astar extends Component {
         } catch(e) {return 99999}
     }
     fCost = cell => {
-        if(this.props.config.algorithm === 'a*') return cell.gCost + this.hCost(cell)
-        if(this.props.config.algorithm === 'djisktras') return cell.gCost
-        if(this.props.config.algorithm === 'greedy') return this.hCost(cell)
+        if(window.algorithm === 'A*') return cell.gCost + this.hCost(cell)
+        if(window.algorithm === 'Djisktras') return cell.gCost
+        if(window.algorithm === 'Greedy') return this.hCost(cell)
         //console.log(cell.gCost, this.hCost(cell))
     }
     getCellByID = id => {
@@ -155,6 +154,7 @@ export class Astar extends Component {
     }
     algorithm = () => {
         window.lock = true
+        window.updateApp()
         const startDate = new Date()
         const startTime = startDate.getTime()
         this.openCell(this.getCellByID(this.state.startCell))
@@ -230,6 +230,7 @@ export class Astar extends Component {
             if(index === path.length - 1) {
                 clearInterval(this.spAlg)
                 window.lock = false
+                window.updateApp()
             }
             index++
         }, 20)
