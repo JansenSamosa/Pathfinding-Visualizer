@@ -44,6 +44,7 @@ export class App extends Component {
             startCell: `CELL${Math.floor(rows/2)}-1`,
             finishCell: `CELL${Math.floor(rows/2)}-${columns-2}`,
             startAlgorithm: false,
+            showInterface: true,
         }
         this.genRef = React.createRef()
         window.updateApp = this.forceUpdate.bind(this)
@@ -66,6 +67,7 @@ export class App extends Component {
     handKeyEvents = e => {
         if(e.key === 'c') this.clearGrid()
         if(!window.lock) {
+            if(e.key === 's') this.setState({...this.state, showInterface: !this.state.showInterface})
             if(e.key === 'p') this.resetAlgorithm()
             if(e.key === 'n') this.generateMap('perlin')
             if(e.key === 'm') this.generateMap('maze')
@@ -166,7 +168,7 @@ export class App extends Component {
         })
     }
     renderInterface = () => {
-        if(!window.lock && !window.mousehold) {
+        if(!window.lock && this.state.showInterface) {
             return <Interface 
                         config={this.state.config} 
                         setConfig={this.setConfig}
