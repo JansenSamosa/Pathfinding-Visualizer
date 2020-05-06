@@ -73,8 +73,8 @@ export class App extends Component {
     }
     handleMouseEvents = e => {
         if(!window.lock) {
-            if(e.type === 'mousedown' || e.type === 'touchstart') window.mousehold = true
-            if(e.type === 'mouseup' || e.type === 'touchend') window.mousehold = false
+            if(e.type === 'mousedown' || e.type === 'touchstart') {window.mousehold = true; this.forceUpdate()}
+            if(e.type === 'mouseup' || e.type === 'touchend') {window.mousehold = false; this.forceUpdate()}
         }
     }
     shouldComponentUpdate(nextProps, nextState) {
@@ -166,7 +166,7 @@ export class App extends Component {
         })
     }
     renderInterface = () => {
-        if(!window.lock) {
+        if(!window.lock && !window.mousehold) {
             return <Interface 
                         config={this.state.config} 
                         setConfig={this.setConfig}

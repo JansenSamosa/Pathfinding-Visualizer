@@ -7,7 +7,7 @@
     position: fixed;
     right:0;
     top:0;
-    height:5%;
+    height:5vh;
     width: 100%;
     overflow:visible;
 }
@@ -28,6 +28,16 @@
     margin-right:.2em;
     float:right;
     overflow: hidden;
+    box-shadow: 0vh .2vh .2vh grey;
+    transition: height 100ms, min-width 100ms, max-width 100ms;
+}
+.interface-btn:hover {
+    background-color: #151e72;
+    border: .25vw solid rgb(131, 107, 240);
+    box-shadow: 0vh .3vh .3vh grey; 
+    max-width:13%;
+    min-width: 13%;
+    height: 110%;
 }
 .interface-btn.pathfinding {
     float: right;
