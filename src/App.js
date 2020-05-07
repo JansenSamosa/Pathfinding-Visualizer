@@ -184,7 +184,7 @@ export class App extends Component {
         return (
             <Router>
                 <div className='app'>
-                    <div className='grid' style={{width: `${window.innerWidth}px`, height: `${window.innerHeight}px`}}>
+                    <div className='grid' style={{width: `${window.innerWidth +100}px`, height: `${window.innerHeight}px`}}>
                         {this.renderGrid()}
                     </div>
                     <Algorithm grid={this.state.grid} config={this.state.config} startAlgorithm={this.state.startAlgorithm}/>
