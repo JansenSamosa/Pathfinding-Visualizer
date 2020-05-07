@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Cell from './components/Cell'
 import Algorithm from './components/algorithms/Algorithm'
 import Generator from './components/generators/Generator'
 import Interface from './components/interface/Interface'
+import Settings from './components/interface/Settings'
 
 import './css/App.css'
 import './css/grid.css'
@@ -15,6 +17,7 @@ export class App extends Component {
         let rows = Math.floor(window.innerHeight/25 - (window.innerHeight/25*2)/25)
         let columns = Math.floor(window.innerWidth/25 - (window.innerWidth/25*2)/25)
         console.log(rows, columns)
+        rows++
         if(rows%2 === 0) rows++
         if(columns%2 === 0) columns++
         console.log(rows, columns)
@@ -67,7 +70,6 @@ export class App extends Component {
     handKeyEvents = e => {
         if(e.key === 'c') this.clearGrid()
         if(!window.lock) {
-            if(e.key === 's') this.setState({...this.state, showInterface: !this.state.showInterface})
             if(e.key === 'p') this.resetAlgorithm()
             if(e.key === 'n') this.generateMap('perlin')
             if(e.key === 'm') this.generateMap('maze')
@@ -180,14 +182,24 @@ export class App extends Component {
     }
     render() {
         return (
-            <div className='app'>
-                <div className='grid' style={{width: `${this.state.config.columns * 25 + (this.state.config.columns * 2 * 1)}px`}}>
-                    {this.renderGrid()}
+            <Router>
+                <div className='app'>
+                    <div className='grid' style={{width: `${window.innerWidth}px`, height: `${window.innerHeight}px`}}>
+                        {this.renderGrid()}
+                    </div>
+                    <Algorithm grid={this.state.grid} config={this.state.config} startAlgorithm={this.state.startAlgorithm}/>
+                    <Generator grid={this.state.grid} config={this.state.config} ref={this.genRef}/>
+                    <Switch>
+                        <Route path='/settings'>
+                            {this.renderInterface()}
+                            <Settings />
+                        </Route>
+                        <Route path='/'>
+                            {this.renderInterface()}
+                        </Route>
+                    </Switch>
                 </div>
-                <Algorithm grid={this.state.grid} config={this.state.config} startAlgorithm={this.state.startAlgorithm}/>
-                <Generator grid={this.state.grid} config={this.state.config} ref={this.genRef}/>
-                {this.renderInterface()}
-            </div>
+            </Router>
         )
     }
 }

@@ -1,0 +1,80 @@
+.settings-container {
+    position: fixed;
+    width:100%;
+    height: 100%;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.418);
+    top:0;
+    left:0;
+}
+.settings-menu {
+    position: relative;
+    width:50%;
+    height: 50%;
+    background-color: black;
+    margin:auto;
+    top:25%;
+    background-color: #131a55;
+    border: .25vw solid rgb(122, 99, 224);
+    border-radius: 7vh;
+    box-shadow: -.4vh .4vh .5vh rgba(0, 0, 0, 0.329);
+    overflow: hidden;
+}
+.settings-menu-header {
+    width:100%;
+    height: 11%;
+    border-bottom:.25vw solid rgb(122, 99, 224);
+    overflow: hidden;
+}
+.settings-menu-header h1 {
+    font-size: 3.4vh;
+    color: white;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    top:1vh;
+}
+.settings-menu-selection {
+    width:25%;
+    height:89%;
+    border-right:.25vw solid rgb(122, 99, 224);
+}
+.settings-menu-selection-btn {
+    width:100%;
+    height:20%;
+    color:white;
+    font-size: 2vh;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: font-size 100ms;
+}
+.settings-menu-selection-btn:nth-child(odd) {
+    background-color: #181e63;
+
+}
+.settings-menu-selection-btn:nth-child(even) {
+    background-color: #1e256b;
+}
+.settings-menu-selection-btn:hover {
+    font-size: 2.35vh;
+    background-color: #2a317c;
+}
+.settings-menu-options {
+    position: absolute;
+    bottom:0;
+    right:0;
+    height: 89%;
+    width:75%;
+}
+.settings-close {
+    position: absolute;
+    right:3%;
+    top:3.8%;
+    height: 2.5vh;
+    cursor: pointer;
+    transition: all 100ms;
+}
+.settings-close:hover {
+    height:2.8vh;
+}
