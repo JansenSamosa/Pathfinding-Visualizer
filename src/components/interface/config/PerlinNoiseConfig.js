@@ -31,7 +31,7 @@ export class PerlinNoiseConfig extends Component {
                     <label>{`Generation Threshhold - ${this.state.perlinNoise.threshhold}`}</label>
                     <input type='range' value={this.state.perlinNoise.threshhold * 200}onChange={this.setThresh.bind(this)}/>
 
-                    <p style={{position:'absolute', bottom:'10%'}}>Note: A higher noise density will generally need a higher generation threshhold and vice-versa</p>
+                    <p style={{position:'absolute', bottom:'10%'}}>Note: A higher noise density will generally need a lower generation threshhold and vice-versa</p>
                 </div>
             </div>
         )
