@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Cell from './components/Cell'
 import Algorithm from './components/algorithms/Algorithm'
@@ -188,7 +188,7 @@ export class App extends Component {
     }
     render() {
         return (
-            <Router>
+            <Router basename='/'>
                 <div className='app'>
                     <div className='grid' style={{width: `${window.innerWidth +100}px`, height: `${window.innerHeight}px`}}>
                         {this.renderGrid()}
