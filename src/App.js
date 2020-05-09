@@ -9,7 +9,9 @@ import Settings from './components/interface/Settings'
 
 import './css/App.css'
 import './css/grid.css'
-
+import './css/slider.css'
+import './css/checkbox.css'
+   
 export class App extends Component {
     constructor(props) {
         super(props)
@@ -39,9 +41,16 @@ export class App extends Component {
             config: {
                 rows,
                 columns,
-                overdrive: 1,
-                perlinDensity: 1,
-                perlinThresh: .22
+                speed: 1,
+                canDiag: true,
+                astar: {
+                    hType: 'octile',
+                    hMultiplier: 1
+                },
+                perlinNoise: {
+                    density: 1,
+                    threshhold: .22
+                }
             },
             grid,
             startCell: `CELL${Math.floor(rows/2)}-1`,
@@ -85,9 +94,6 @@ export class App extends Component {
         if(this.state.grid !== nextState.grid) return false
         else if(this.state.config !== nextState.config) return true
         else return true
-    }
-    componentDidUpdate() {
-        console.log("HI")
     }
     setConfig = newConfig => {
         this.setState({...this.state, config: newConfig})
@@ -192,7 +198,7 @@ export class App extends Component {
                     <Switch>
                         <Route path='/settings'>
                             {this.renderInterface()}
-                            <Settings />
+                            <Settings config={this.state.config} setConfig={this.setConfig}/>
                         </Route>
                         <Route path='/'>
                             {this.renderInterface()}

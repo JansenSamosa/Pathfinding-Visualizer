@@ -70,9 +70,12 @@ export class Astar extends Component {
             const x1 = cell.column; const y1 = cell.row; const x2 = finishCell.column; const y2 = finishCell.row
             const dx = Math.abs(x1 - x2)
             const dy = Math.abs(y1 - y2)
-            //const h = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) * D //EUCLIDIAN DISTANCE
-            //const h = D * (dx + dy) //MANHATTAN DISTANCE
-            const h = D * (dx + dy) + (D2 - 2*D) * Math.min(dx, dy) //OCTILE DISTANCE
+            const hType = this.props.config.astar.hType
+            let h = 0
+            if(hType === 'manhatten') h = D * (dx + dy) //MANHATTAN DISTANCE
+            if(hType === 'octile') h = D * (dx + dy) + (D2 - 2*D) * Math.min(dx, dy) //OCTILE DISTANCE
+            if(hType === 'euclidian') h = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) * D //EUCLIDIAN DISTANCE
+            h *= this.props.config.astar.hMultiplier
             return h
         } catch(e) {return 99999}
     }
@@ -108,19 +111,20 @@ export class Astar extends Component {
         if(left) neighbors.push(grid[row][column-1])
         if(right) neighbors.push(grid[row][column+1])
         
-        if(top && right) {
-            if(grid[row-1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row-1][column+1])
+        if(this.props.config.canDiag) {
+            if(top && right) {
+                if(grid[row-1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row-1][column+1])
+            }
+            if(top && left){
+                if(grid[row-1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row-1][column-1])
+            } 
+            if(bottom && right){
+                if(grid[row+1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row+1][column+1])
+            } 
+            if(bottom && left){
+                if(grid[row+1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row+1][column-1])
+            } 
         }
-        if(top && left){
-            if(grid[row-1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row-1][column-1])
-        } 
-        if(bottom && right){
-            if(grid[row+1][column].type !== 'WALL' && grid[row][column+1] !== 'WALL') neighbors.push(grid[row+1][column+1])
-        } 
-        if(bottom && left){
-            if(grid[row+1][column].type !== 'WALL' && grid[row][column-1] !== 'WALL') neighbors.push(grid[row+1][column-1])
-        } 
-        
         neighbors = neighbors.filter(n => n.type !== 'WALL')
         
         for(let i = 0; i< closed.length; i++) {
@@ -158,10 +162,10 @@ export class Astar extends Component {
         const startDate = new Date()
         const startTime = startDate.getTime()
         this.openCell(this.getCellByID(this.state.startCell))
-        const speed = this.props.config.overdrive < 1 ? (1 - this.props.config.overdrive) * 100 : 1
+        const speed = this.props.config.speed < 1 ? (1 - this.props.config.speed) * 100 : 1
         console.log(speed)
         this.astar = setInterval(() => {
-            for(let j = 0; j < this.props.config.overdrive; j++) {
+            for(let j = 0; j < this.props.config.speed; j++) {
                 let current = this.getCellByID(this.state.open[0].id)
                 for(let i = 0; i < this.state.open.length; i++) {
                     const cell = this.getCellByID(this.state.open[i].id)

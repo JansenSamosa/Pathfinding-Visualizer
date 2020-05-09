@@ -1,0 +1,79 @@
+.settings-menu-config-container {
+    color:white;
+}
+.settings-menu-config-container h1{
+    text-align: left;
+    color: white;
+    font-size: 1.5vw;
+    position: absolute;
+    top:3%;
+    width:100%;
+    padding-left: 3%;
+}
+.settings-menu-config-options {
+    position: absolute;
+    bottom:0;
+    width:80%;
+    left:10%;
+    height:86%;
+}
+.settings-menu-config-options input{
+    float:left;
+    margin-bottom: 4%;
+    margin-top: 4%;
+}
+.settings-menu-config-container.astar .settings-menu-config-options .checkbox {
+    position: absolute;
+    left:35%;
+    top:43%;
+    font-size: 0;
+}
+.settings-menu-config-container.djisktras .settings-menu-config-options .checkbox {
+    position: absolute;
+    left:33%;
+    top:21.5%;
+    font-size: 0;
+}
+.settings-menu-config-container.greedy .settings-menu-config-options .checkbox {
+    position: absolute;
+    left:33%;
+    top:21.5%;
+    font-size: 0;
+}
+
+.settings-menu-config-container .htypeSelect {
+    position: absolute;
+    width:20%;
+    height:30%;
+    overflow: hidden;
+    border-radius: 20%;
+    top:65%;
+    left: 0%;
+}
+.settings-menu-config-container.greedy .htypeSelect {
+    top:45%;
+}
+
+.settings-menu-config-container .htypeSelect  button{
+    width:100%;
+    height:33%;
+    border:none;
+    color:white;
+    font-weight: bold;
+    outline: none;
+    font-size: 1.5vh;
+}
+.settings-menu-config-container.htypeSelect  .notselected{
+    background-color: rgb(114, 90, 218);
+}
+.settings-menu-config-container.htypeSelect  .notselected:hover{
+    background-color: rgb(102, 79, 202);
+}
+.settings-menu-config-container.htypeSelect  .selected{
+    background-color: rgb(56, 49, 153);
+}
+.settings-menu-config-container label{
+    font-size: 2vh;
+    float:left;
+    clear:left;
+}

@@ -7,13 +7,14 @@ export class Generator extends Component {
     genPerlinNoise = () => {
         window.lock = true
         const { config, grid } = this.props
+        const perlinConfig = config.perlinNoise
         const perlin = new tumult.PerlinN()
         for(let r = 0; r < config.rows; r++) {
             for(let c = 0; c < config.columns; c++) {
                 if(grid[r][c].type !== 'START' && grid[r][c].type !== 'FINISH') {
-                    const val = Math.abs(perlin.gen(c/10*config.perlinDensity, r/10*config.perlinDensity))
+                    const val = Math.abs(perlin.gen(c/10*perlinConfig.density, r/10*perlinConfig.density))
                     //if(grid[r][c].type === 'WALL') window.cellRefs[r][c].changeType('NORMAL')
-                    if(val > config.perlinThresh) {
+                    if(val > perlinConfig.threshhold) {
                         window.cellRefs[r][c].changeType('WALL')
                     }
                 }

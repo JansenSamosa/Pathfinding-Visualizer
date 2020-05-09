@@ -1,0 +1,35 @@
+.checkbox input[type='checkbox'] {
+    position: absolute;
+    left:-999px;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkbox .checkbox-custom {
+    position: absolute;
+    left:0;
+    right:0;
+    width:1.2vw;
+    height:1.2vw;
+    border-radius: 30%;
+    background-color: rgb(114, 90, 218);
+    cursor: pointer;
+}
+.checkbox .checkbox-custom:hover {
+    background-color: rgb(80, 57, 182);
+}
+.checkbox input[type='checkbox']:checked ~ .checkbox-custom {
+    background-color: rgb(101, 80, 192);
+}
+.checkbox input[type='checkbox']:checked ~ .checkbox-custom::after {
+    background-color: transparent;
+    width:.3vw;
+    height:.7vw;
+    content:"";
+    position: absolute;
+    left:.35vw;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border: 0vw solid rgb(220, 210, 255);
+    border-width: 0 .135vw .135vw 0;
+}
